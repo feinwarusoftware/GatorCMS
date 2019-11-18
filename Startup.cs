@@ -13,6 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.OpenApi.Models;
 
 namespace GatorCms
 {
@@ -34,6 +35,14 @@ namespace GatorCms
 
             services.AddSingleton<GatorService>();
 
+            services.AddSwaggerGen (c => {
+                c.SwaggerDoc ("v1", new OpenApiInfo {
+                    Version = "v1",
+                        Title = "GatorCMS",
+                        Description = "An epic headless CMS. Name change pending...",
+                });
+            });
+
             services.AddControllers();
         }
 
@@ -50,6 +59,13 @@ namespace GatorCms
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseSwagger ();
+            app.UseSwaggerUI (c => {
+                c.SwaggerEndpoint ("/swagger/v1/swagger.json", "GatorCMS v1");
+                c.RoutePrefix = string.Empty;
+            });
+
 
             app.UseEndpoints(endpoints =>
             {
