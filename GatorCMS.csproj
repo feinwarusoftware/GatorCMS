@@ -1,14 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk.Web">
-
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
+    <UserSecretsId>fe8ca7d8e229036968bdd96e1bf12987</UserSecretsId>
   </PropertyGroup>
-
-  <ItemGroup>
-  </ItemGroup>
-
+  <ItemGroup></ItemGroup>
   <ItemGroup>
     <PackageReference Include="MongoDB.Driver" Version="2.9.3" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.0.0-rc3" />
   </ItemGroup>
-
 </Project>
