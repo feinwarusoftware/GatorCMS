@@ -1,2 +1,2 @@
-# epicserver
+# GatorCMS
 An *epic* headless CMS. Name change pending...
