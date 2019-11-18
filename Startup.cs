@@ -13,47 +13,55 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.OpenApi.Models;
 
-namespace GatorCms
-{
-    public class Startup
-    {
-        public Startup(IConfiguration configuration)
-        {
+namespace GatorCms {
+    public class Startup {
+        public Startup (IConfiguration configuration) {
             Configuration = configuration;
         }
 
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
-        {
-            services.Configure<GatorDatabaseSettings>(Configuration.GetSection(nameof(GatorDatabaseSettings)));
+        public void ConfigureServices (IServiceCollection services) {
+            services.Configure<GatorDatabaseSettings> (Configuration.GetSection (nameof (GatorDatabaseSettings)));
 
-            services.AddSingleton<IGatorDatabaseSettings>(sp => sp.GetRequiredService<IOptions<GatorDatabaseSettings>>().Value);
+            services.AddSingleton<IGatorDatabaseSettings> (sp => sp.GetRequiredService<IOptions<GatorDatabaseSettings>> ().Value);
 
-            services.AddSingleton<GatorService>();
+            services.AddSwaggerGen (c => {
+                c.SwaggerDoc ("v1", new OpenApiInfo {
+                    Version = "v1",
+                        Title = "GatorCMS",
+                        Description = "An *epic* headless CMS. Name change pending...",
+                });
+            });
 
-            services.AddControllers();
+            services.AddSingleton<GatorService> ();
+
+            services.AddControllers ();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-        {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
+        public void Configure (IApplicationBuilder app, IWebHostEnvironment env) {
+            if (env.IsDevelopment ()) {
+                app.UseDeveloperExceptionPage ();
             }
 
-            app.UseHttpsRedirection();
+            app.UseHttpsRedirection ();
 
-            app.UseRouting();
+            app.UseRouting ();
 
-            app.UseAuthorization();
+            app.UseAuthorization ();
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
+            app.UseSwagger ();
+            app.UseSwaggerUI (c => {
+                c.SwaggerEndpoint ("/swagger/v1/swagger.json", "GatorCMS V1");
+                c.RoutePrefix = string.Empty;
+            });
+
+            app.UseEndpoints (endpoints => {
+                endpoints.MapControllers ();
             });
         }
     }
