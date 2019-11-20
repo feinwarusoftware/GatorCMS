@@ -1,9 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using GatorCMS.Models;
+using GatorCMS.Connectors.MongoDb;
 using GatorCMS.Services;
+using GatorCMS.Services.Interfaces;
+using GatorCMS.Wrappers.DatabaseSettings;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -22,9 +20,10 @@ namespace GatorCms {
         }
 
         public IConfiguration Configuration { get; }
-
+    
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices (IServiceCollection services) {
+
             services.Configure<GatorDatabaseSettings> (Configuration.GetSection (nameof (GatorDatabaseSettings)));
 
             services.AddSingleton<IGatorDatabaseSettings> (sp => sp.GetRequiredService<IOptions<GatorDatabaseSettings>> ().Value);
@@ -37,7 +36,9 @@ namespace GatorCms {
                 });
             });
 
-            services.AddSingleton<GatorService> ();
+            services.AddSingleton<IGatorService,GatorService>();
+            services.AddSingleton<IMongoDbConnector,MongoDbConnector>();
+            services.AddSingleton<IGatorDatabaseSettings,GatorDatabaseSettings>();
 
             services.AddControllers ();
         }

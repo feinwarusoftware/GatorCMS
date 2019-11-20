@@ -1,7 +1,7 @@
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace GatorCms.Controllers
+namespace GatorCms.Models
 {
   public class GatorBoii
   {

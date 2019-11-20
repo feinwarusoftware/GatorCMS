@@ -1,6 +1,6 @@
-using GatorCms.Controllers;
-using GatorCMS.Models;
+using GatorCms.Models;
 using GatorCMS.Services;
+using GatorCMS.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 
@@ -10,7 +10,7 @@ namespace GatorApi.Controllers
     [ApiController]
     public class GatorBoiiController : ControllerBase
     {
-        private readonly GatorService _gatorService;
+        private readonly IGatorService _gatorService;
 
         public GatorBoiiController(GatorService gatorService)
         {
@@ -18,8 +18,10 @@ namespace GatorApi.Controllers
         }
 
         [HttpGet]
-        public ActionResult<List<GatorBoii>> Get() =>
-            _gatorService.Get();
+
+        public ActionResult<List<GatorBoii>> Get(){
+            return _gatorService.Get();
+        }
 
         [HttpGet("{id:length(24)}", Name = "GetGator")]
         public ActionResult<GatorBoii> Get(string id)
@@ -67,7 +69,7 @@ namespace GatorApi.Controllers
                 return NotFound();
             }
 
-            _gatorService.Remove(book.Id);
+            _gatorService.Remove(book, book.Id);
 
             return NoContent();
         }
