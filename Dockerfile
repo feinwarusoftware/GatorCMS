@@ -8,7 +8,7 @@ WORKDIR /src
 COPY ["GatorCMS.Core/GatorCMS.Core.csproj", "GatorCMS.Core/"]
 RUN dotnet restore "GatorCMS.Core/GatorCMS.Core.csproj"
 COPY . .
-WORKDIR "/src/GatorCMS.Core"
+WORKDIR /src/GatorCMS.Core
 RUN dotnet build "GatorCMS.Core.csproj" -c Release -o /app/build
 
 FROM build AS publish
