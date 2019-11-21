@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using GatorCms.Models;
+using GatorCMS.Core.Models;
 
-namespace GatorCMS.Services.Interfaces
+namespace GatorCMS.Core.Services.GatorService
 {
     public interface IGatorService
     {

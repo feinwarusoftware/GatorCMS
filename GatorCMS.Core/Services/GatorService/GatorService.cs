@@ -1,15 +1,15 @@
 using System.Collections.Generic;
-using System.Linq;
-using GatorCms.Models;
-using GatorCMS.Connectors.MongoDb;
-using GatorCMS.Services.Interfaces;
+using GatorCMS.Core.Connectors.MongoDB;
+using GatorCMS.Core.Models;
 using MongoDB.Driver;
 
-namespace GatorCMS.Services {
-    public class GatorService : IGatorService {
-        private readonly IMongoDbConnector _mongoDbConnector;
+namespace GatorCMS.Core.Services.GatorService
+{
+    public class GatorService : IGatorService
+    {
+        private readonly IMongoDBConnector _mongoDbConnector;
 
-        public GatorService (IMongoDbConnector mongoDbConnector) {
+        public GatorService (IMongoDBConnector mongoDbConnector) {
             _mongoDbConnector = mongoDbConnector;
         }
 
@@ -49,6 +49,5 @@ namespace GatorCMS.Services {
             var collection = _mongoDbConnector.GetGatorBoiiCollection ();
             collection.DeleteOne (book => book.Id == bookIn.Id);
         }
-
     }
 }
