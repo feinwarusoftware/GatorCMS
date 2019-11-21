@@ -1,9 +1,5 @@
-using Microsoft.Extensions.Configuration;
-
-namespace GatorCMS.Wrappers.DatabaseSettings
-{
-    public class GatorDatabaseSettings : IGatorDatabaseSettings
-    {
+namespace GatorCMS.Core.Wrappers.DBSettings {
+    public class GatorDBSettings : IGatorDBSettings {
         public string BooksCollectionName { get; set; }
         public string ConnectionString { get; set; }
         public string DatabaseName { get; set; }
