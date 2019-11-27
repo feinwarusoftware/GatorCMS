@@ -5,6 +5,8 @@
     <UserSecretsId>a3c234a7d0b23443cb49c9d2807ee381</UserSecretsId>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="graphiql" Version="1.2.0" />
+    <PackageReference Include="GraphQL" Version="2.4.0" />
     <PackageReference Include="MongoDB.Driver" Version="2.9.3" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.0.0-rc4" />
   </ItemGroup>

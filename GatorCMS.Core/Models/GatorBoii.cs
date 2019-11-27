@@ -1,10 +1,12 @@
-using MongoDB.Bson;
+﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace GatorCMS.Core.Models {
-    public class GatorBoii {
+namespace GatorCMS.Core.Models
+{
+    public class GatorBoii
+    {
         [BsonId]
-        [BsonRepresentation (BsonType.ObjectId)]
+        [BsonRepresentation(BsonType.ObjectId)]
         public string Id { set; get; }
 
         public string name { set; get; }
