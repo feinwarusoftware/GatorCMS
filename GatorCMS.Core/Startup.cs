@@ -1,26 +1,18 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 using GatorCMS.Core.Connectors.MongoDB;
 using GatorCMS.Core.Models;
 using GatorCMS.Core.Services.LemonService;
 using GatorCMS.Core.Wrappers.DBSettings;
-using GraphiQl;
 using GraphQL;
 using GraphQL.Http;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
+using System.IO;
 
 namespace GatorCMS.Core {
     public class Startup {
@@ -38,8 +30,10 @@ namespace GatorCMS.Core {
             //    options.AllowSynchronousIO = false;
             //});
 
-            services.Configure<LemonDBSettings>(Configuration.GetSection("LemonDatabaseSettings"));
-            services.AddSingleton<ILemonDBSettings>(sp => sp.GetRequiredService<IOptions<LemonDBSettings>>().Value);
+            // var test = Configuration.GetSection(nameof(LemonDBSettings)).GetChildren();
+
+            // services.Configure<LemonDBSettings>(Configuration.GetSection(nameof(LemonDBSettings)));
+            // services.AddSingleton<ILemonDBSettings>(sp => sp.GetRequiredService<IOptions<LemonDBSettings>>().Value);
 
             services.AddSwaggerGen (c => {
                 c.SwaggerDoc ("v1", new OpenApiInfo {
@@ -81,6 +75,10 @@ namespace GatorCMS.Core {
 
             app.UseAuthorization();
 
+            app.UseEndpoints(endpoints => {
+                endpoints.MapControllers();
+            });
+
             app.UseSwagger();
             app.UseSwaggerUI(c => {
                 c.SwaggerEndpoint ("/swagger/v1/swagger.json", "GatorCMS V1");
@@ -99,10 +97,6 @@ namespace GatorCMS.Core {
                         "playground"
                     )
                 )
-            });
-
-            app.UseEndpoints(endpoints => {
-                endpoints.MapControllers();
             });
         }
     }
