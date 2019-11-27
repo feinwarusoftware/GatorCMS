@@ -4,19 +4,19 @@ using MongoDB.Driver;
 
 namespace GatorCMS.Core.Connectors.MongoDB {
     public class MongoDBConnector : IMongoDBConnector {
-        private readonly IGatorDBSettings _gatorDatabaseSettings;
+        private readonly ILemonDBSettings _lemonDatabaseSettings;
 
-        public MongoDBConnector (IGatorDBSettings gatorDatabaseSettings) {
-            _gatorDatabaseSettings = gatorDatabaseSettings;
+        public MongoDBConnector (ILemonDBSettings lemonDatabaseSettings) {
+            _lemonDatabaseSettings = lemonDatabaseSettings;
         }
 
-        public IMongoCollection<GatorBoii> GetGatorBoiiCollection () {
-            var client = new MongoClient (_gatorDatabaseSettings.ConnectionString);
-            var database = client.GetDatabase (_gatorDatabaseSettings.DatabaseName);
+        public IMongoCollection<Lemon> GetLemonCollection() {
+            var client = new MongoClient(_lemonDatabaseSettings.ConnectionString);
+            var database = client.GetDatabase(_lemonDatabaseSettings.DatabaseName);
 
-            var books = database.GetCollection<GatorBoii> (_gatorDatabaseSettings.BooksCollectionName);
+            var lemons = database.GetCollection<Lemon>(_lemonDatabaseSettings.LemonsCollectionName);
 
-            return books;
+            return lemons;
         }
     }
 }

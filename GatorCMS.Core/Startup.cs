@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using GatorCMS.Core.Connectors.MongoDB;
 using GatorCMS.Core.Models;
-using GatorCMS.Core.Services.GatorService;
+using GatorCMS.Core.Services.LemonService;
 using GatorCMS.Core.Wrappers.DBSettings;
 using GraphiQl;
 using GraphQL;
@@ -38,9 +38,8 @@ namespace GatorCMS.Core {
             //    options.AllowSynchronousIO = false;
             //});
 
-            services.Configure<GatorDBSettings> (Configuration.GetSection (nameof (GatorDBSettings)));
-
-            services.AddSingleton<IGatorDBSettings> (sp => sp.GetRequiredService<IOptions<GatorDBSettings>> ().Value);
+            services.Configure<LemonDBSettings>(Configuration.GetSection("LemonDatabaseSettings"));
+            services.AddSingleton<ILemonDBSettings>(sp => sp.GetRequiredService<IOptions<LemonDBSettings>>().Value);
 
             services.AddSwaggerGen (c => {
                 c.SwaggerDoc ("v1", new OpenApiInfo {
@@ -50,9 +49,9 @@ namespace GatorCMS.Core {
                 });
             });
 
-            services.AddSingleton<IGatorService, GatorService> ();
-            services.AddSingleton<IMongoDBConnector, MongoDBConnector> ();
-            services.AddSingleton<IGatorDBSettings, GatorDBSettings> ();
+            services.AddSingleton<ILemonService, LemonService>();
+            services.AddSingleton<IMongoDBConnector, MongoDBConnector>();
+            services.AddSingleton<ILemonDBSettings, LemonDBSettings>();
 
             // graphql
             services.AddTransient<IDependencyResolver>(servicesProvider =>
@@ -61,8 +60,11 @@ namespace GatorCMS.Core {
             });
             services.AddSingleton<IDocumentExecuter, DocumentExecuter>();
             services.AddSingleton<IDocumentWriter, DocumentWriter>();
-            services.AddTransient<QueryType>();
-            services.AddTransient<LemonSchema>();
+            // services.AddTransient<QueryType>();
+            // services.AddTransient<LemonSchema>();
+            services.AddTransient<AppQuery>();
+            services.AddTransient<LemonType>();
+            services.AddTransient<AppSchema>();
 
             services.AddControllers();
         }
@@ -77,17 +79,17 @@ namespace GatorCMS.Core {
 
             app.UseRouting();
 
-            app.UseAuthorization ();
+            app.UseAuthorization();
 
             app.UseSwagger();
-            app.UseSwaggerUI (c => {
+            app.UseSwaggerUI(c => {
                 c.SwaggerEndpoint ("/swagger/v1/swagger.json", "GatorCMS V1");
                 c.RoutePrefix = string.Empty;
             });
 
             // graphql
-            app.UseGraphiQl();
-            app.UseGraphQLMiddleware<LemonSchema>();
+            // app.UseGraphiQl();
+            app.UseGraphQLMiddleware<AppSchema>();
             app.UseFileServer(new FileServerOptions
             {
                 RequestPath = "/playground",
@@ -99,8 +101,8 @@ namespace GatorCMS.Core {
                 )
             });
 
-            app.UseEndpoints (endpoints => {
-                endpoints.MapControllers ();
+            app.UseEndpoints(endpoints => {
+                endpoints.MapControllers();
             });
         }
     }

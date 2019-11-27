@@ -16,6 +16,10 @@ namespace GatorCMS.Core.Models
                 name: "message",
                 resolve: context => "he was a gator boy, she said, i am horribly addicted to opioids"
             );
+            Field<NonNullGraphType<StringGraphType>>(
+                name: "gay",
+                resolve: context => "yes"
+            );
         }
     }
 }
