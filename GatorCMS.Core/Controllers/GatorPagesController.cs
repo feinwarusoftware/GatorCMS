@@ -3,6 +3,7 @@ using GatorCMS.Core.Models;
 using GatorCMS.Core.Models.Pages;
 using GatorCMS.Core.Services.GatorPagesService;
 using Microsoft.AspNetCore.Mvc;
+using MongoDB.Bson;
 
 namespace GatorCMS.Core.Controllers {
     [Route ("api/[controller]")]
@@ -23,7 +24,7 @@ namespace GatorCMS.Core.Controllers {
 
         [HttpGet ("{id:length(24)}", Name = "GetBasePage")]
         public BasePage Get (string id) {
-            var page = _gatorPagesService.GetPage(id);
+            var page = _gatorPagesService.GetPage(ObjectId.Parse(id));
 
             if (page == null)
             {

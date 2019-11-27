@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Security.Cryptography;
 using GatorCMS.Core.Connectors.MongoDB;
 using GatorCMS.Core.Models.Pages;
+using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace GatorCMS.Core.Services.GatorPagesService {
@@ -23,8 +24,11 @@ namespace GatorCMS.Core.Services.GatorPagesService {
             return gatorPagesList;
         }
 
-        public BasePage GetPage (string id) {
-            throw new System.NotImplementedException ();
+        public BasePage GetPage (ObjectId id) {
+            var collection = _mongoDBConnector.GetGatorPagesCollection();
+
+            var page = collection.Find(x => x.Id == id).FirstOrDefault();
+            return page;
         }
 
         public BasePage CreateBasePage (BasePage page) {
