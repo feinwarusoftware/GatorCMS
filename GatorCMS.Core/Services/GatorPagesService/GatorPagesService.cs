@@ -31,7 +31,7 @@ namespace GatorCMS.Core.Services.GatorPagesService {
         public List<T> GetPages<T> () where T : IBasePage {
             var collection = _mongoDBConnector.GetGatorPagesCollection<T> ();
 
-            var gatorPagesList = collection.Find (x => x._id.ObjectType == typeof (T).FullName)
+            var gatorPagesList = collection.Find (x => x._t == typeof (T).FullName)
                 .ToList ();
 
             return gatorPagesList;
@@ -39,7 +39,7 @@ namespace GatorCMS.Core.Services.GatorPagesService {
 
         public T GetPage<T> (Guid id) where T : IBasePage {
             var collection = _mongoDBConnector.GetGatorPagesCollection<T> ();
-            var page = collection.Find (x => x._id.pageId == id).FirstOrDefault ();
+            var page = collection.Find (x => x._id == id).FirstOrDefault ();
 
             if (page != null) {
                 return page;
