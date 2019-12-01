@@ -13,13 +13,18 @@ namespace GatorCMS.Core.Connectors.MongoDB {
 
         public IMongoCollection<T> GetGatorPagesCollection<T> () {
 
-            var client = new MongoClient (_dbCredentials.ConnectionString);
-
-            var database = client.GetDatabase (_dbCredentials.DatabaseName);
+            var database = GetGatorDatabase ();
 
             var gatorPagesCollection = database.GetCollection<T> (_dbCredentials.GatorPagesCollection);
 
             return gatorPagesCollection;
+        }
+
+        public IMongoDatabase GetGatorDatabase () {
+            var client = new MongoClient (_dbCredentials.ConnectionString);
+            var database = client.GetDatabase (_dbCredentials.DatabaseName);
+
+            return database;
         }
     }
 }
