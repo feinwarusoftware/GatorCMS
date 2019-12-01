@@ -13,6 +13,7 @@ using GatorCMS.Core.Models.Pages;
 using MongoDB.Bson.Serialization;
 using System.Collections.Generic;
 using System;
+using GatorCMS.Core.Connectors.MongoGridFS;
 
 namespace GatorCMS.Core
 {
@@ -46,6 +47,7 @@ namespace GatorCMS.Core
             services.AddSingleton<IDBCredentials, DBCredentials>();
             services.AddSingleton<IGatorPagesService, GatorPagesService>();
             services.AddSingleton<IMongoDBConnector, MongoDBConnector>();
+            services.AddSingleton<IMongoGridFSConnector, MongoGridFSConnector>();
 
             services.AddControllers();
         }

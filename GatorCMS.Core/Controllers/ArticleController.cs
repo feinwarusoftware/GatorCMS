@@ -7,7 +7,7 @@ namespace GatorCMS.Core.Controllers
     {
         public ArticleController(IGatorPagesService gatorPagesService) : base (gatorPagesService)
         {
-     
+            
         }
     }
 }
