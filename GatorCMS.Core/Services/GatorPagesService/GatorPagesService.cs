@@ -38,7 +38,6 @@ namespace GatorCMS.Core.Services.GatorPagesService {
         }
 
         public T GetPage<T> (Guid id) where T : IBasePage {
-
             var collection = _mongoDBConnector.GetGatorPagesCollection<T> ();
             var page = collection.Find (x => x._id.pageId == id).FirstOrDefault ();
 

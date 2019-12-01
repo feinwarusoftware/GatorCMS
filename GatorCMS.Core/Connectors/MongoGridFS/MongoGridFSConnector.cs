@@ -15,6 +15,16 @@ namespace GatorCMS.Core.Connectors.MongoGridFS {
             _mongoDBConnector = mongoDBConnector;
         }
 
+        public byte[] GetImage(ObjectId id)
+        {
+            var database = _mongoDBConnector.GetGatorDatabase();
+            var bucket = GetBucket(database,"ArticleImages");
+
+            var imageBytes = bucket.DownloadAsBytes(id);
+
+            return imageBytes;
+        }
+
         public ObjectId Upload (byte[] image, string imageName, string bucketName) {
             var database = _mongoDBConnector.GetGatorDatabase ();
             var bucket = GetBucket (database, bucketName);
