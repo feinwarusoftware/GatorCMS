@@ -1,22 +1,25 @@
-using GatorCMS.Core.Models;
-using GatorCMS.Core.Wrappers.DBSettings;
+using GatorCMS.Core.Models.Pages;
+using GatorCMS.Core.Wrappers.DB;
 using MongoDB.Driver;
 
 namespace GatorCMS.Core.Connectors.MongoDB {
-    public class MongoDBConnector : IMongoDBConnector {
-        private readonly ILemonDBSettings _lemonDatabaseSettings;
 
-        public MongoDBConnector (ILemonDBSettings lemonDatabaseSettings) {
-            _lemonDatabaseSettings = lemonDatabaseSettings;
+    public class MongoDBConnector : IMongoDBConnector {
+
+        private readonly IDBCredentials _dbCredentials;
+        public MongoDBConnector (IDBCredentials dbCredentials) {
+            _dbCredentials = dbCredentials;
         }
 
-        public IMongoCollection<Lemon> GetLemonCollection() {
-            var client = new MongoClient(_lemonDatabaseSettings.ConnectionString);
-            var database = client.GetDatabase(_lemonDatabaseSettings.DatabaseName);
+        public IMongoCollection<T> GetGatorPagesCollection<T> () {
 
-            var lemons = database.GetCollection<Lemon>(_lemonDatabaseSettings.LemonsCollectionName);
+            var client = new MongoClient (_dbCredentials.ConnectionString);
 
-            return lemons;
+            var database = client.GetDatabase (_dbCredentials.DatabaseName);
+
+            var gatorPagesCollection = database.GetCollection<T> (_dbCredentials.GatorPagesCollection);
+
+            return gatorPagesCollection;
         }
     }
 }

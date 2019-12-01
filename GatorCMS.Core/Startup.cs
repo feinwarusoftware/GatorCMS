@@ -4,6 +4,9 @@ using GatorCMS.Core.Services.LemonService;
 using GatorCMS.Core.Wrappers.DBSettings;
 using GraphQL;
 using GraphQL.Http;
+using GatorCMS.Core.Services.GatorPagesService;
+using GatorCMS.Core.Wrappers.MongoDB;
+using GatorCMS.Core.Wrappers.DB;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
@@ -12,18 +15,26 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
+using GatorCMS.Core.Models.Pages;
+using MongoDB.Bson.Serialization;
+using System.Collections.Generic;
+using System;
 using System.IO;
 
-namespace GatorCMS.Core {
-    public class Startup {
-        public Startup (IConfiguration configuration) {
+namespace GatorCMS.Core
+{
+    public class Startup
+    {
+        public Startup(IConfiguration configuration)
+        {
             Configuration = configuration;
         }
 
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices (IServiceCollection services) {
+        public void ConfigureServices(IServiceCollection services)
+        {
 
             //services.Configure<IISServerOptions>(options =>
             //{
@@ -38,8 +49,8 @@ namespace GatorCMS.Core {
             services.AddSwaggerGen (c => {
                 c.SwaggerDoc ("v1", new OpenApiInfo {
                     Version = "v1",
-                        Title = "GatorCMS",
-                        Description = "An *epic* headless CMS. Name change pending...",
+                    Title = "GatorCMS",
+                    Description = "A Snappy CMS",
                 });
             });
 
@@ -64,8 +75,10 @@ namespace GatorCMS.Core {
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure (IApplicationBuilder app, IWebHostEnvironment env) {
-            if (env.IsDevelopment()) {
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        {
+            if (env.IsDevelopment())
+            {
                 app.UseDeveloperExceptionPage();
             }
 
