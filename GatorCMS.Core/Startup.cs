@@ -53,8 +53,9 @@ namespace GatorCMS.Core
                 });
             });
 
+            services.AddSingleton<IDBCredentials, DBCredentials>();
+            services.AddSingleton<IGatorPagesService, GatorPagesService>();
             services.AddSingleton<IMongoDBConnector, MongoDBConnector>();
-            services.AddSingleton<ILemonDBSettings, LemonDBSettings>();
 
             // graphql
             services.AddTransient<IDependencyResolver>(servicesProvider =>
@@ -63,11 +64,11 @@ namespace GatorCMS.Core
             });
             services.AddSingleton<IDocumentExecuter, DocumentExecuter>();
             services.AddSingleton<IDocumentWriter, DocumentWriter>();
-            // services.AddTransient<QueryType>();
+            services.AddTransient<QueryType>();
             // services.AddTransient<LemonSchema>();
             // services.AddTransient<QueryType>();
             // services.AddTransient<PageType>();
-            // services.AddTransient<AppSchema>();
+            services.AddTransient<AppSchema>();
 
             services.AddControllers();
         }
