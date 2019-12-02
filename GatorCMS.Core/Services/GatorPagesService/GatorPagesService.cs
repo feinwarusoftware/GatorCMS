@@ -1,21 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Reflection;
-using System.Security.Cryptography;
 using GatorCMS.Core.Connectors.MongoDB;
 using GatorCMS.Core.Connectors.MongoGridFS;
 using GatorCMS.Core.Models.Pages;
-using MongoDB.Bson;
+using GatorCMS.Core.Services.PageTypeRepositoryService;
 using MongoDB.Driver;
 
 namespace GatorCMS.Core.Services.GatorPagesService {
     public class GatorPagesService : IGatorPagesService {
 
         private readonly IMongoDBConnector _mongoDBConnector;
+        private readonly IGatorPageTypeRepositoryService _gatorPageTypeRepositoryService;
         private readonly IMongoGridFSConnector _mongoGridFSConnector;
-        public GatorPagesService (IMongoDBConnector mongoDBConnector, IMongoGridFSConnector mongoGridFSConnector) {
+        public GatorPagesService (IMongoDBConnector mongoDBConnector, IGatorPageTypeRepositoryService gatorPageTypeRepositoryService, IMongoGridFSConnector mongoGridFSConnector) {
             _mongoDBConnector = mongoDBConnector;
+            _gatorPageTypeRepositoryService = gatorPageTypeRepositoryService;
             _mongoGridFSConnector = mongoGridFSConnector;
 
         }
@@ -53,11 +52,14 @@ namespace GatorCMS.Core.Services.GatorPagesService {
 
             collection.InsertOne (page);
 
-             if (page is ArticlePage) {
+            var basePage = (IBasePage) page;
+            _gatorPageTypeRepositoryService.AddPageType(basePage._t);
+
+            if (page is ArticlePage) {
                 var articlePage = page as ArticlePage;
 
-                if(articlePage.Image.Length > 0){
-                    _mongoGridFSConnector.Upload(articlePage.Image,articlePage.ImageName,"ArticleImages");
+                if (articlePage.Image.Length > 0) {
+                    _mongoGridFSConnector.Upload (articlePage.Image, articlePage.ImageName, "ArticleImages");
                 }
             }
 

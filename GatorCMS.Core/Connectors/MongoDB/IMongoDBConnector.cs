@@ -6,5 +6,7 @@ namespace GatorCMS.Core.Connectors.MongoDB {
         IMongoCollection<T> GetGatorPagesCollection<T> ();
 
         IMongoDatabase GetGatorDatabase();
+
+        IMongoCollection<T> GetGatorPageTypeCollection<T>();
     }
 }
