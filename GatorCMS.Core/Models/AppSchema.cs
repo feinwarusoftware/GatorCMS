@@ -1,4 +1,5 @@
-﻿using GraphQL;
+﻿using GatorCMS.Core.Models.Pages;
+using GraphQL;
 using GraphQL.Types;
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ namespace GatorCMS.Core.Models
     {
         public AppSchema(IDependencyResolver resolver): base(resolver)
         {
-            Query = resolver.Resolve<AppQuery>();
+            Query = resolver.Resolve<QueryType>();
         }
     }
 }

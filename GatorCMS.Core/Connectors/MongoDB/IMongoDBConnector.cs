@@ -5,6 +5,6 @@ namespace GatorCMS.Core.Connectors.MongoDB
 {
     public interface IMongoDBConnector
     {
-         IMongoCollection<GatorBoii> GetGatorBoiiCollection ();
+        IMongoCollection<T> GetGatorPagesCollection<T>();
     }
 }

@@ -1,24 +1,26 @@
-﻿using GraphQL.Types;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
+using GatorCMS.Core.Models.Pages;
+using GatorCMS.Core.Services.GatorPagesService;
+using GraphQL.Types;
 
 namespace GatorCMS.Core.Models
 {
     public class QueryType : ObjectGraphType
     {
-        public QueryType()
+        public QueryType(IGatorPagesService gatorPagesService)
         {
             Name = "Query";
 
-            Field<NonNullGraphType<StringGraphType>>(
-                name: "message",
-                resolve: context => "he was a gator boy, she said, i am horribly addicted to opioids"
-            );
-            Field<NonNullGraphType<StringGraphType>>(
-                name: "gay",
-                resolve: context => "yes"
+            // var t = new ObjectGraphType();
+            // t.Field<>;
+            
+            Field<ListGraphType<PageType<GatorPage>>>(
+                name: "pages",
+                resolve: context => gatorPagesService.GetAllPages<GatorPage>()
             );
         }
     }

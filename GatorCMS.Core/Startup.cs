@@ -1,6 +1,5 @@
 using GatorCMS.Core.Connectors.MongoDB;
 using GatorCMS.Core.Models;
-using GatorCMS.Core.Services.LemonService;
 using GatorCMS.Core.Wrappers.DBSettings;
 using GraphQL;
 using GraphQL.Http;
@@ -54,7 +53,6 @@ namespace GatorCMS.Core
                 });
             });
 
-            services.AddSingleton<ILemonService, LemonService>();
             services.AddSingleton<IMongoDBConnector, MongoDBConnector>();
             services.AddSingleton<ILemonDBSettings, LemonDBSettings>();
 
@@ -67,9 +65,9 @@ namespace GatorCMS.Core
             services.AddSingleton<IDocumentWriter, DocumentWriter>();
             // services.AddTransient<QueryType>();
             // services.AddTransient<LemonSchema>();
-            services.AddTransient<AppQuery>();
-            services.AddTransient<LemonType>();
-            services.AddTransient<AppSchema>();
+            // services.AddTransient<QueryType>();
+            // services.AddTransient<PageType>();
+            // services.AddTransient<AppSchema>();
 
             services.AddControllers();
         }
