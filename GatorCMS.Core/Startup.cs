@@ -20,6 +20,7 @@ using System.Collections.Generic;
 using System;
 using System.IO;
 using EntityGraphQL.Schema;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace GatorCMS.Core
 {
@@ -46,13 +47,15 @@ namespace GatorCMS.Core
             // services.Configure<LemonDBSettings>(Configuration.GetSection(nameof(LemonDBSettings)));
             // services.AddSingleton<ILemonDBSettings>(sp => sp.GetRequiredService<IOptions<LemonDBSettings>>().Value);
 
-            // services.AddSwaggerGen (c => {
-            //     c.SwaggerDoc ("v1", new OpenApiInfo {
-            //         Version = "v1",
-            //         Title = "GatorCMS",
-            //         Description = "A Snappy CMS",
-            //     });
-            // });
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Version = "v1",
+                    Title = "GatorCMS",
+                    Description = "A Snappy CMS",
+                });
+            });
 
             services.AddSingleton<IDBCredentials, DBCredentials>();
             services.AddSingleton<IGatorPagesService, GatorPagesService>();
@@ -65,11 +68,13 @@ namespace GatorCMS.Core
             });
             services.AddSingleton<IDocumentExecuter, DocumentExecuter>();
             services.AddSingleton<IDocumentWriter, DocumentWriter>();
-            // //services.AddTransient<QueryType>();
-            // //services.AddTransient<LemonSchema>();
             services.AddTransient<QueryType>();
-            services.AddTransient<PageType<GatorPage>>();
             services.AddTransient<AppSchema>();
+
+            //
+            //services.AddTransient<PageType<GatorPage>>();
+            services.AddTransient(typeof(PageType<>));
+            //
 
             services.AddControllers();
         }
@@ -88,29 +93,30 @@ namespace GatorCMS.Core
 
             app.UseAuthorization();
 
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "GatorCMS V1");
+                c.RoutePrefix = string.Empty;
+            });
+
             app.UseEndpoints(endpoints => {
                 endpoints.MapControllers();
             });
 
-            //app.UseSwagger();
-            //app.UseSwaggerUI(c => {
-            //    c.SwaggerEndpoint ("/swagger/v1/swagger.json", "GatorCMS V1");
-            //    c.RoutePrefix = string.Empty;
-            //});
-
             // graphql
-            // app.UseGraphiQl();
+            //app.UseGraphiQl();
             app.UseGraphQLMiddleware<AppSchema>();
-            //app.UseFileServer(new FileServerOptions
-            //{
-            //    RequestPath = "/playground",
-            //    FileProvider = new PhysicalFileProvider(
-            //        Path.Combine(
-            //            Directory.GetCurrentDirectory(),
-            //            "playground"
-            //        )
-            //    )
-            //});
+            app.UseFileServer(new FileServerOptions
+            {
+                RequestPath = "/playground",
+                FileProvider = new PhysicalFileProvider(
+                    Path.Combine(
+                        Directory.GetCurrentDirectory(),
+                        "playground"
+                    )
+                )
+            });
         }
     }
 }

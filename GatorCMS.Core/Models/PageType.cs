@@ -2,8 +2,7 @@
 using GraphQL.Types;
 using System;
 using System.Reflection;
-using GraphQL.Language.AST;
-using TypeExtensions = GraphQL.Types.TypeExtensions;
+using GraphQL.Utilities;
 
 namespace GatorCMS.Core.Models
 {
@@ -15,18 +14,14 @@ namespace GatorCMS.Core.Models
 
             foreach (PropertyInfo prop in typeof(T).GetProperties())
             {
-                // Console.WriteLine(TypeExtensions.GraphTypeFromType(typeof(string) as IType, null).ToString());
-
-                if (prop.PropertyType == typeof(string))
+                var type = GraphTypeTypeRegistry.Get(prop.PropertyType);
+                if (type == null)
                 {
-                    var fieldType = new FieldType() { Name = prop.Name, Type = typeof(StringGraphType) };
-                    AddField(fieldType);
-
-                    // Field<StringGraphType>(prop.Name);
-                } else if (prop.PropertyType == typeof(bool))
-                {
-                    Field<BooleanGraphType>(prop.Name);
+                    Console.WriteLine("GatorCMS: Could not convert '" + prop.PropertyType + "' to graph type on " + Name + ".");
+                    continue;
                 }
+
+                Field(type, prop.Name);
             }
         }
     }

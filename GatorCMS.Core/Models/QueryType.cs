@@ -17,22 +17,25 @@ namespace GatorCMS.Core.Models
 
             Name = "Query";
 
+            Field<ListGraphType<PageType<GatorPage>>>("gatorPages", resolve: context => gatorPagesService.GetPages<GatorPage>());
+            Field<ListGraphType<PageType<ArticlePage>>>("articlePages", resolve: context => gatorPagesService.GetPages<ArticlePage>());
+
             //Field<ListGraphType<PageType<GatorPage>>>(
             //    "rawrxd",
             //    resolve: context => gatorPagesService.GetPages<GatorPage>()
             //);
 
-            var fieldType = new FieldType()
-            {
-                Name = "rawrxd",
-                Description = "this lib broke lmao",
-                DeprecationReason = null,
-                Type = typeof(ListGraphType<PageType<GatorPage>>),
-                Arguments = null,
-                Resolver = new FuncFieldResolver<PageType<GatorPage>, object>(context => gatorPagesService.GetPages<GatorPage>())
-            };
+            //var fieldType = new FieldType()
+            //{
+            //    Name = "rawrxd",
+            //    Description = "this lib broke lmao",
+            //    DeprecationReason = null,
+            //    Type = typeof(ListGraphType<PageType<GatorPage>>),
+            //    Arguments = null,
+            //    Resolver = new FuncFieldResolver<PageType<GatorPage>, object>(context => gatorPagesService.GetPages<GatorPage>())
+            //};
 
-            AddField(fieldType);
+            //AddField(fieldType);
 
             // Console.WriteLine(fieldType);
         }
