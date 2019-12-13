@@ -19,8 +19,6 @@ using MongoDB.Bson.Serialization;
 using System.Collections.Generic;
 using System;
 using System.IO;
-using EntityGraphQL.Schema;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using GatorCMS.Core.Connectors.MongoGridFS;
 
 namespace GatorCMS.Core
