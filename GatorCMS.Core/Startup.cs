@@ -21,6 +21,7 @@ using System;
 using System.IO;
 using EntityGraphQL.Schema;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using GatorCMS.Core.Connectors.MongoGridFS;
 
 namespace GatorCMS.Core
 {
@@ -60,6 +61,7 @@ namespace GatorCMS.Core
             services.AddSingleton<IDBCredentials, DBCredentials>();
             services.AddSingleton<IGatorPagesService, GatorPagesService>();
             services.AddSingleton<IMongoDBConnector, MongoDBConnector>();
+            services.AddSingleton<IMongoGridFSConnector, MongoGridFSConnector>();
 
             // graphql
             services.AddTransient<IDependencyResolver>(servicesProvider =>

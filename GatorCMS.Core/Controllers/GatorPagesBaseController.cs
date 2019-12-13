@@ -12,26 +12,29 @@ namespace GatorCMS.Core.Controllers {
     public class GatorPagesBaseController<T> : ControllerBase where T : IBasePage {
 
         private readonly IGatorPagesService _gatorPagesService;
-        public GatorPagesBaseController(IGatorPagesService gatorPagesService) {
+        public GatorPagesBaseController (IGatorPagesService gatorPagesService) {
             _gatorPagesService = gatorPagesService;
         }
 
+        [Route ("[action]")]
         [HttpGet]
-        public List<T> Get() {
-            var gatorPages = _gatorPagesService.GetPages<T>();
+        public List<T> GetAllPages () {
+            var gatorPages = _gatorPagesService.GetPages<T> ();
             return gatorPages;
         }
 
-        [HttpGet ("{id:length(24)}")]
-        public T Get(string id) {
-            var page = _gatorPagesService.GetPage<T>(Guid.Parse(id));
+        [Route ("[action]/{id}")]
+        [HttpGet]
+        public T GetPage (string id) {
+            var page = _gatorPagesService.GetPage<T> (Guid.Parse (id));
 
             return page;
         }
 
+        [Route ("[action]")]
         [HttpPost]
-        public T Create(T page) {
-            var createdPage = _gatorPagesService.CreatePage(page);
+        public T CreatePage (T page) {
+            var createdPage = _gatorPagesService.CreatePage (page);
             return createdPage;
         }
     }
